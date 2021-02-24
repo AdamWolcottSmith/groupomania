@@ -1,5 +1,6 @@
 CREATE TABLE users(
-user_id BIGSERIAL NOT NULL,
+user_id uuid NOT NULL DEFAULT
+uuid_generate_v4(),
 email VARCHAR(255) NOT NULL,
 password VARCHAR(255) NOT NULL,
 first_name VARCHAR(255) NOT NULL,
@@ -14,7 +15,7 @@ UNIQUE (email)
 
 CREATE TABLE posts(
 post_id SERIAL NOT NULL PRIMARY KEY,
-user_id INT,
+user_id uuid,
 caption VARCHAR(255) NULL,
 image_url VARCHAR(255) NULL,
 date_created DATE NOT NULL,
@@ -26,7 +27,7 @@ CONSTRAINT fk_user
 );
 
 CREATE TABLE user_read(
-user_id INT,
+user_id uuid,
 post_id INT,
 CONSTRAINT fk_user
  FOREIGN KEY (user_id)
