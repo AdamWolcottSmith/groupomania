@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import './App.css';
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link,
   Redirect
 } from 'react-router-dom';
 
@@ -16,14 +17,62 @@ import Register from './components/Register';
 
 
 function App() {
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  const setAuth = (Boolean) => {
+    setIsAuthenticated(Boolean)
+  }
+
   return (
     <Fragment>
       <Router>
         <div className="container">
+          <ul>
+            <li>
+              <Link to='/'>Home</Link>
+            </li>
+            <li>
+              <Link to='/login'>login</Link>
+            </li>
+            <li>
+              <Link to='/register'>register</Link>
+            </li>
+            <li>
+              <Link to='/dashboard'>Dashboard</Link>
+            </li>
+          </ul>
+
+          <hr />
+
           <Switch>
-            <Route exact path='/login' render={props => <Login {...props} />} />
-            <Route exact path='/register' render={props => <Register {...props} />} />
-            <Route exact path='/dashboard' render={props => <Dashboard {...props} />} />
+            <Route exact path='/login'
+              render={props =>
+                !isAuthenticated ? (
+                  <Login {...props} setAuth={setAuth} />
+                ) : (
+                    <Redirect to='/dashboard' />
+                  )
+              }
+            />
+            <Route exact path='/register'
+              render={props =>
+                !isAuthenticated ? (
+                  <Register {...props} setAuth={setAuth} />
+                ) : (
+                    <Redirect to='/login' />
+                  )
+              }
+            />
+            <Route exact path='/dashboard'
+              render={props =>
+                isAuthenticated ? (
+                  <Dashboard {...props} setAuth={setAuth} />
+                ) : (
+                    <Redirect to='/login' />
+                  )
+              }
+            />
           </Switch>
         </div>
       </Router>
