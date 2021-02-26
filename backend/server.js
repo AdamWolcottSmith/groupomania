@@ -13,6 +13,7 @@ app.use(express.json()) //req.body
 //register and login routes
 
 app.use('/auth', require('./routes/jwtAuth'))
+app.use('/dashboard', require('./routes/dashboard'))
 
 app.get('/', (req, res) => {
  res.send('Hello, Chunklet')
