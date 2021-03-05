@@ -20,8 +20,8 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  const setAuth = (Boolean) => {
-    setIsAuthenticated(Boolean)
+  const setAuth = (boolean) => {
+    setIsAuthenticated(boolean)
   }
 
   return (
