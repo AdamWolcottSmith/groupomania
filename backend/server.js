@@ -1,24 +1,47 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const PORT = process.env.PORT || 4000
+const http = require('http');
+const app = require('./app');
 
-//middleware
+const normalizePort = val => {
+ const port = parseInt(val, 10);
 
-app.use(cors())
-app.use(express.json()) //req.body
+ if (isNaN(port)) {
+  return val;
+ }
+ if (port >= 0) {
+  return port;
+ }
+ return false;
+};
+const port = normalizePort(process.env.PORT || '4000');
+app.set('port', port);
 
-//ROUTES
+const errorHandler = error => {
+ if (error.syscall !== 'listen') {
+  throw error;
+ }
+ const address = server.address();
+ const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+ switch (error.code) {
+  case 'EACCES':
+   console.error(bind + ' requires elevated privileges.');
+   process.exit(1);
+   break;
+  case 'EADDRINUSE':
+   console.error(bind + ' is already in use.');
+   process.exit(1);
+   break;
+  default:
+   throw error;
+ }
+};
 
-//register and login routes
+const server = http.createServer(app);
 
-app.use('/auth', require('./routes/jwtAuth'))
-app.use('/dashboard', require('./routes/dashboard'))
+server.on('error', errorHandler);
+server.on('listening', () => {
+ const address = server.address();
+ const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+ console.log('Listening on ' + bind);
+});
 
-app.get('/', (req, res) => {
- res.send('Hello, Chunklet')
-})
-
-app.listen(PORT, () => {
- console.log(`Sever running on port ${PORT}`);
-})
+server.listen(port);
