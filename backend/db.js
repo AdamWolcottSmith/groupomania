@@ -8,4 +8,10 @@ const pool = new Pool({
  database: 'groupnetwork'
 })
 
-module.exports = pool;
+module.exports = {
+ query: (text, params, callback) => {
+  return pool.query(text, params, callback)
+ },
+}
+
+// module.exports = pool;
