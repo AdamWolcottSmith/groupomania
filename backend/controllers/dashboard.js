@@ -27,12 +27,11 @@ exports.createPost = async (req, res) => {
    "INSERT INTO posts (image_url, caption, user_id) VALUES ($1, $2, $3) RETURNING *",
    [image_url, caption, userId])
 
-  res.status(201).json(`New post added`)
-  console.log(newPost.rows[0]);
+  res.status(201).json(newPost.rows[0])
 
  } catch (error) {
   console.error(error.message)
-  res.status(500).json('Server Error Create Post')
+  res.status(500).json('Cannot create post')
  }
 }
 
@@ -45,7 +44,7 @@ exports.getOnePost = (req, res) => {
    if (error) {
     throw error
    }
-   res.status(200).json(results.rows)
+   res.status(200).json(results.rows[0])
   })
 }
 
@@ -63,22 +62,35 @@ exports.modifyPost = async (req, res) => {
    const updatePost = await pool.query(
     "UPDATE posts SET image_url = $1, caption = $2 WHERE user_id = $3 AND post_id = $4",
     [image_url, caption, userId, postId])
-   res.json(updatePost.rows)
+
+   if (updatePost.rowCount === 0) {
+    throw new Error('Failed to update post')
+   }
+   res.status(200).json(`Post ${postId} updated successfully`)
+
   } else if (caption) {
    const updatePost = await pool.query(
     "UPDATE posts SET caption = $1 WHERE user_id = $2 AND post_id = $3",
     [caption, userId, postId])
-   res.json(updatePost.rows)
+
+   if (updatePost.rowCount === 0) {
+    throw new Error('Failed to update post')
+   }
+   res.status(200).json(`Post ${postId} updated successfully`)
+
   } else if (image_url) {
    const updatePost = await pool.query(
     "UPDATE posts SET image_url = $1 WHERE user_id = $2 AND post_id = $3",
     [image_url, userId, postId])
-   res.json(updatePost.rows)
-  }
 
+   if (updatePost.rowCount === 0) {
+    throw new Error('Failed to update post')
+   }
+   res.status(200).json(`Post ${postId} updated successfully`)
+  }
  } catch (error) {
   console.error(error.message)
-  res.status(500).json('Server Error Create Post')
+  res.status(500).json(error.message)
  }
 }
 
@@ -88,11 +100,14 @@ exports.deletePost = async (req, res) => {
  try {
   const userId = req.users
   const post_id = parseInt(req.params.id)
-  await pool.query('DELETE FROM posts WHERE post_id = $1 AND user_id = $2', [post_id, userId])
+  const resp = await pool.query('DELETE FROM posts WHERE post_id = $1 AND user_id = $2', [post_id, userId])
+  if (resp.rowCount === 0) {
+   throw new Error('Failed to delete post')
+  }
   res.status(200).json(`Post deleted with ID: ${post_id}`)
  } catch (error) {
-  console.log("Failed to delete post:" + error)
-  res.sendStatus(500)
+  console.error(error.message)
+  res.status(500).send(error.message)
  }
 
  // const userId = req.users
