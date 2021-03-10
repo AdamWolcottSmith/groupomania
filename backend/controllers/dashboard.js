@@ -130,7 +130,7 @@ exports.deletePost = async (req, res) => {
 exports.getAllPosts = (req, res) => {
 
  console.log(req.users);
- pool.query('SELECT * FROM posts ORDER BY created_at DESC',
+ pool.query('SELECT p.user_id, post_id, caption, image_url, created_at, first_name, last_name FROM posts p INNER JOIN users u ON u.user_id = p.user_id ORDER BY created_at DESC',
   (error, results) => {
    if (error) {
     throw error

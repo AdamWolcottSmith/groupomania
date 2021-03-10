@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import GetPosts from './GetPosts'
 
 const Dashboard = ({ setAuth }) => {
 
@@ -37,6 +38,7 @@ const Dashboard = ({ setAuth }) => {
   <Fragment>
    <h1>Hello {name}!</h1>
    <button className="btn btn-primary" onClick={e => logout(e)}>Log Out </button>
+   <GetPosts />
   </Fragment>
  )
 }

@@ -71,3 +71,15 @@ exports.login = async (req, res) => {
   res.status(500).send('Server Error')
  }
 }
+
+
+exports.getAllUsers = async (req, res) => {
+
+ await pool.query('SELECT * FROM users',
+  (error, results) => {
+   if (error) {
+    throw error
+   }
+   res.status(200).json(results.rows)
+  })
+}
