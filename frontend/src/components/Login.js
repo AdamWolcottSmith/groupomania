@@ -9,7 +9,7 @@ const Login = ({ setAuth }) => {
   password: '',
  })
 
- const { email, password, } = inputs
+ const { email, password } = inputs
 
  const onChange = (e) => {
   setInputs({ ...inputs, [e.target.name]: e.target.value })

@@ -35,7 +35,7 @@ const GetPosts = () => {
       <li key={post.post_id}>
        <h2>{post.caption}</h2>
        <div>{post.image_url}</div>
-       <div>{post.first_name}</div>
+       <div>{post.username}</div>
       </li>
      )
     })}

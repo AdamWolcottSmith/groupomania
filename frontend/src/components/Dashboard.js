@@ -16,7 +16,7 @@ const Dashboard = ({ setAuth }) => {
 
    const parseRes = await response.json()
 
-   setName(parseRes.first_name)
+   setName(parseRes.username)
 
   } catch (error) {
    console.error(error.message)
