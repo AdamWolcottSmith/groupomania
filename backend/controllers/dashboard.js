@@ -60,33 +60,23 @@ exports.modifyPost = async (req, res) => {
     const userId = req.users
     const postId = parseInt(req.params.id)
     const { text } = req.body
-    let imageUrl = url + '/images/' + req.file.filename
 
-    if (imageUrl && text) {
+    if (req.file) {
+
+      let imageUrl = url + '/images/' + req.file.filename
       const updatePost = await pool.query(
         "UPDATE posts SET image_url = $1, text = $2 WHERE user_id = $4 AND post_id = $5",
         [imageUrl, userId, postId, text])
-
       if (updatePost.rowCount === 0) {
         throw new Error('Failed to update post')
       }
       res.status(200).json(`Post ${postId} updated successfully`)
 
-    } else if (text) {
+    } else {
+
       const updatePost = await pool.query(
         "UPDATE posts SET text = $1 WHERE user_id = $2 AND post_id = $3",
         [text, userId, postId])
-
-      if (updatePost.rowCount === 0) {
-        throw new Error('Failed to update post')
-      }
-      res.status(200).json(`Post ${postId} updated successfully`)
-
-    } else if (imageUrl) {
-      const updatePost = await pool.query(
-        "UPDATE posts SET image_url = $1 WHERE user_id = $2 AND post_id = $3",
-        [imageUrl, userId, postId])
-
       if (updatePost.rowCount === 0) {
         throw new Error('Failed to update post')
       }
