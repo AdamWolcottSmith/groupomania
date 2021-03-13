@@ -11,31 +11,31 @@ const Ul = styled.ul`
   }
 
   @media (max-width: 768px) {
-   flex-flow: column nowrap;
-   background-color: #0d2538;
-   position: fixed;
-   transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
-   top: 0;
-   right: 0;
-   height: 100vh; 
-   width: 300px;
-   padding-top: 3.5rem;
-   transition: transform 0.3s ease-in-out;
+  flex-flow: column nowrap;
+  background-color: #0d2538;
+  position: fixed;
+  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
+  top: 0;
+  right: 0;
+  height: 100vh; 
+  width: 300px;
+  padding-top: 3.5rem;
+  transition: transform 0.3s ease-in-out;
 
-   li {
+  li {
     color:  #fff;
-   }
   }
-`
+  }
+`;
 
 const RightNav = ({ open }) => {
- return (
-  <Ul open={open}>
-   <li>Home</li>
-   <li>Login</li>
-   <li>Sign Up</li>
-  </Ul>
- )
+  return (
+    <Ul open={open}>
+      <li>Home</li>
+      <li>Login</li>
+      <li>Sign Up</li>
+    </Ul>
+  )
 }
 
 export default RightNav

@@ -15,20 +15,20 @@ text VARCHAR(255) NULL,
 image_url VARCHAR(255) NULL,
 created_at TIMESTAMP NOT NULL,
 CONSTRAINT fk_user
- FOREIGN KEY (user_id)
-  REFERENCES users(user_id)
-   ON DELETE CASCADE
+   FOREIGN KEY (user_id)
+      REFERENCES users(user_id)
+      ON DELETE CASCADE
 );
 
 CREATE TABLE user_read(
 user_id uuid,
 post_id INT,
 CONSTRAINT fk_user
- FOREIGN KEY (user_id)
-  REFERENCES users(user_id)
-   ON DELETE CASCADE,
+   FOREIGN KEY (user_id)
+      REFERENCES users(user_id)
+      ON DELETE CASCADE,
 CONSTRAINT fk_post
- FOREIGN KEY (post_id)
-  REFERENCES posts(post_id)
-   ON DELETE CASCADE
+   FOREIGN KEY (post_id)
+      REFERENCES posts(post_id)
+      ON DELETE CASCADE
 );
