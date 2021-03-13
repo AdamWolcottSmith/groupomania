@@ -25,17 +25,20 @@ const GetPosts = () => {
   } catch (error) {
    console.error(error.message)
   }
- }, [])
+ }, [setPosts])
 
  return (
   <Fragment>
-   <ul>
+   <ul className="d-flex justify-content-center ">
     {posts.map(post => {
      return (
-      <li key={post.post_id}>
-       <h2>{post.caption}</h2>
-       <div>{post.image_url}</div>
-       <div>{post.username}</div>
+      <li className="w-75 card" key={post.post_id}>
+       <div className="">
+        <img className="img-fluid center" src={post.image_url} alt="" />
+       </div>
+
+       <h3 className="card-text">{post.text}</h3>
+       <div className="card-subtitle mb-2 text-muted">posted by {post.username} on {post.created_at.split('T')[0]}</div>
       </li>
      )
     })}

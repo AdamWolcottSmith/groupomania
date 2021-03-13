@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import './App.css';
+import Navbar from './components/navbar/Navbar';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -51,25 +52,9 @@ function App() {
 
   return (
     <Fragment>
+      <Navbar />
       <Router>
         <div className="container">
-          <ul>
-            <li>
-              <Link to='/'>Home</Link>
-            </li>
-            <li>
-              <Link to='/login'>login</Link>
-            </li>
-            <li>
-              <Link to='/register'>register</Link>
-            </li>
-            <li>
-              <Link to='/dashboard'>Dashboard</Link>
-            </li>
-          </ul>
-
-          <hr />
-
           <Switch>
             <Route exact path='/login'
               render={props =>
