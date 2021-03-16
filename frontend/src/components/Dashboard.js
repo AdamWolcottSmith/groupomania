@@ -1,6 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import GetPosts from './GetPosts'
+import styled from 'styled-components';
+import CreatePosts from './CreatePosts';
+
+const Greeting = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem;
+`;
 
 const Dashboard = ({ setAuth }) => {
 
@@ -37,12 +45,12 @@ const Dashboard = ({ setAuth }) => {
   return (
     <Fragment>
 
-      <div className="container">
-        <div className="row">
-          <h1 className="col-sm-1">Hello {name}!</h1>
-          <button className="btn btn-primary col-sm-2" onClick={e => logout(e)}>Log Out </button>
-        </div>
-      </div>
+      <Greeting>
+        <h1>Hello {name}!</h1>
+        <button className="btn btn-primary col-sm-2" onClick={e => logout(e)}>Log Out</button>
+        <button className="btn btn-danger col-sm-2" onClick={e => logout(e)}>Delete Account</button>
+      </Greeting>
+      <CreatePosts />
 
       <GetPosts />
 

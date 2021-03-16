@@ -34,6 +34,7 @@ const RightNav = ({ open }) => {
       <li>Home</li>
       <li>Login</li>
       <li>Sign Up</li>
+      <li>Delete Account</li>
     </Ul>
   )
 }
