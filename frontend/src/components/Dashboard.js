@@ -1,8 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import GetPosts from './GetPosts'
 import styled from 'styled-components';
-import CreatePosts from './CreatePosts';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import SinglePost from './posts/SinglePost';
+import CreatePosts from './posts/CreatePosts';
+import GetPosts from './posts/GetPosts';
 
 const Greeting = styled.div`
   display: flex;
@@ -44,16 +47,18 @@ const Dashboard = ({ setAuth }) => {
 
   return (
     <Fragment>
-
-      <Greeting>
-        <h1>Hello {name}!</h1>
-        <button className="btn btn-primary col-sm-2" onClick={e => logout(e)}>Log Out</button>
-        <button className="btn btn-danger col-sm-2" onClick={e => logout(e)}>Delete Account</button>
-      </Greeting>
-      <CreatePosts />
-
-      <GetPosts />
-
+      <BrowserRouter>
+        <Greeting>
+          <h1>Hello {name}!</h1>
+          <button className="btn btn-primary col-sm-2" onClick={e => logout(e)}>Log Out</button>
+          <button className="btn btn-danger col-sm-2" onClick={e => logout(e)}>Delete Account</button>
+        </Greeting>
+        <CreatePosts />
+        <Switch>
+          <Route exact path='/dashboard/' component={GetPosts} />
+          <Route exact path='/dashboard/post/:id' component={SinglePost}></Route>
+        </Switch>
+      </BrowserRouter>
     </Fragment>
   )
 }

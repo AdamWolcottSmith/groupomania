@@ -13,8 +13,7 @@ const Nav = styled.nav`
   .logo {
     padding: 15px 0;
   }
-`
-
+`;
 
 const Navbar = () => {
   return (

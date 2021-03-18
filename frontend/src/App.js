@@ -2,14 +2,13 @@ import React, { Fragment, useState, useEffect } from 'react'
 import './App.css';
 import Navbar from './components/navbar/Navbar';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect
 } from 'react-router-dom';
 
@@ -52,8 +51,8 @@ function App() {
 
   return (
     <Fragment>
-      <Navbar />
       <Router>
+        <Navbar />
         <div className="container">
           <Switch>
             <Route exact path='/login'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components';
 
 const PostForm = styled.form`
@@ -68,12 +68,13 @@ const CreatePosts = () => {
 
     setImage('')
     setBody('')
+
   };
 
   return (
     <PostForm>
       <label htmlFor="upload-button">
-        {image.preview ? <img src={image.preview} /> : (
+        {image.preview ? <img src={image.preview} alt='' /> : (
           <div>
             upload your photo here
           </div>

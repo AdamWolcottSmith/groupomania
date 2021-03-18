@@ -17,14 +17,24 @@ exports.dashboard = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    const url = req.protocol + '://' + req.get('host');
+
     const userId = req.users
     const { text } = req.body
-    let imageUrl = url + '/images/' + req.file.filename
-    const newPost = await pool.query(
-      "INSERT INTO posts (image_url, user_id, text) VALUES ($1, $2, $3) RETURNING *",
-      [imageUrl, userId, text])
-    res.status(201).json(newPost.rows[0])
+
+    if (req.file) {
+      const url = req.protocol + '://' + req.get('host');
+      let imageUrl = url + '/images/' + req.file.filename
+      const newPost = await pool.query(
+        "INSERT INTO posts (image_url, user_id, text) VALUES ($1, $2, $3) RETURNING *",
+        [imageUrl, userId, text])
+      res.status(201).json(newPost.rows[0])
+    } else {
+      const newPost = await pool.query(
+        "INSERT INTO posts (user_id, text) VALUES ($1, $2) RETURNING *",
+        [userId, text])
+      res.status(201).json(newPost.rows[0])
+    }
+
   } catch (error) {
     console.error(error.message)
     res.status(500).json('Cannot create post')
@@ -35,7 +45,7 @@ exports.createPost = async (req, res) => {
 
 exports.getOnePost = (req, res) => {
   const postId = parseInt(req.params.id)
-  pool.query('SELECT * FROM posts WHERE post_id = $1', [postId],
+  pool.query('SELECT p.user_id, post_id, image_url, created_at, text, username FROM posts p INNER JOIN users u ON u.user_id = p.user_id WHERE post_id = $1', [postId],
     (error, results) => {
       if (error) {
         throw error
