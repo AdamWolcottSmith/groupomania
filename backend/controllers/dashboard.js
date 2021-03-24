@@ -114,12 +114,17 @@ exports.deletePost = async (req, res) => {
 
 //get all posts
 
-exports.getAllPosts = (req, res) => {
-  pool.query('SELECT p.user_id, post_id, image_url, created_at, text, username FROM posts p INNER JOIN users u ON u.user_id = p.user_id ORDER BY created_at DESC',
-    (error, results) => {
-      if (error) {
-        throw error
-      }
+exports.getAllPosts = async (req, res) => {
+  try {
+    const client = await pool.connect()
+    try {
+      const results = await client.query('SELECT p.user_id, post_id, image_url, created_at, text, username FROM posts p INNER  JOIN users u ON u.user_id = p.user_id ORDER BY created_at DESC')
       res.status(200).json(results.rows)
-    })
+    } finally {
+      client.release()
+    }
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json(error.message)
+  }
 }

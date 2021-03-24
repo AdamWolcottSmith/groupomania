@@ -37,30 +37,39 @@ const PostLayout = styled.ul`
   }
 `;
 
+const GetPosts = (args) => {
 
-const GetPosts = () => {
+  console.log('posts', args.posts);
 
-  const [posts, setPosts] = useState([])
   useEffect(() => {
-    try {
-      const getPosts = async () => {
-        let postReq = await fetch('http://localhost:4000/dashboard/post', {
-          method: 'GET',
-          headers: { token: localStorage.token }
-        });
-        const postRes = await postReq.json()
-        setPosts(postRes)
-      }
-      getPosts()
-    } catch (error) {
-      console.error(error.message)
-    }
+
+    fetch('http://localhost:4000/dashboard/post', {
+      method: 'GET',
+      headers: { token: localStorage.token }
+    })
+      .then(res => res.json())
+      .then(data => args.setPosts(data));
+
   }, [])
+
+  // const fetchPosts = () => {
+  //   fetch(`http://localhost:4000/dashboard/post`, {
+  //     method: 'GET',
+  //     headers: { token: localStorage.token }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => setPosts(data));
+  // }
+
+  // useEffect(() => {
+  //   let mounted = true;
+  //   fetchPosts()
+  //   return () => mounted = false;
+  // }, [])
 
   return (
     <PostLayout>
-
-      {posts.map(post => {
+      {args.posts?.map(post => {
         return (
           <Link to={`/dashboard/post/${post.post_id}`} key={post.post_id}>
             <li>
@@ -68,13 +77,12 @@ const GetPosts = () => {
                 <img className='img-fluid' src={post.image_url} alt="" />
               </div>
               <p className='post-body'>{post.text}</p>
-              <div className='credits'> posted by {post.username} on {post.created_at.split('T')[0]}
+              <div className='credits'>
               </div>
             </li>
           </Link>
         )
       })}
-
     </PostLayout>
   )
 }

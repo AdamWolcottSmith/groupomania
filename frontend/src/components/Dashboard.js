@@ -16,6 +16,7 @@ const Greeting = styled.div`
 const Dashboard = ({ setAuth }) => {
 
   const [name, setName] = useState('')
+  const [posts, setPosts] = useState([])
 
   async function getName() {
     try {
@@ -53,11 +54,12 @@ const Dashboard = ({ setAuth }) => {
           <button className="btn btn-primary col-sm-2" onClick={e => logout(e)}>Log Out</button>
           <button className="btn btn-danger col-sm-2" onClick={e => logout(e)}>Delete Account</button>
         </Greeting>
-        <CreatePosts />
-        <Switch>
-          <Route exact path='/dashboard/' component={GetPosts} />
-          <Route exact path='/dashboard/post/:id' component={SinglePost}></Route>
-        </Switch>
+        <CreatePosts posts={posts} setPosts={setPosts} />
+        <GetPosts posts={posts} setPosts={setPosts} />
+
+        {/* <Route exact path='/dashboard' component={() => <GetPosts posts={posts} setPosts={setPosts} />} /> */}
+        <Route exact path='/dashboard/post/:id' component={SinglePost}></Route>
+
       </BrowserRouter>
     </Fragment>
   )
