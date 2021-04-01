@@ -55,10 +55,15 @@ const Dashboard = ({ setAuth }) => {
           <button className="btn btn-danger col-sm-2" onClick={e => logout(e)}>Delete Account</button>
         </Greeting>
         <CreatePosts posts={posts} setPosts={setPosts} />
-        <GetPosts posts={posts} setPosts={setPosts} />
 
-        {/* <Route exact path='/dashboard' component={() => <GetPosts posts={posts} setPosts={setPosts} />} /> */}
-        <Route exact path='/dashboard/post/:id' component={SinglePost}></Route>
+        <Switch>
+          <Route exact path='/dashboard'>
+            <GetPosts posts={posts} setPosts={setPosts} />
+          </Route>
+          <Route exact path='/dashboard/post/:id'>
+            <SinglePost />
+          </Route>
+        </Switch>
 
       </BrowserRouter>
     </Fragment>

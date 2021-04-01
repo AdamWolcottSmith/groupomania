@@ -34,7 +34,7 @@ const PostForm = styled.form`
 
 const CreatePosts = (args) => {
 
-  console.log('setposts', args.setPosts);
+  // console.log('setposts', args.setPosts);
 
   const [image, setImage] = useState({ preview: '', raw: '' })
   const [body, setBody] = useState('')
@@ -67,11 +67,7 @@ const CreatePosts = (args) => {
       body: formData
     };
     const post = await fetch("http://localhost:4000/dashboard/post", requestOptions)
-
-    // console.log(post);
-
-    // // await args.setPosts([...args.posts, post]);
-
+    args.setPosts([...args.posts, post]);
 
     setImage('')
     setBody('')

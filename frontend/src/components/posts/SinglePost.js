@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router';
 import styled from 'styled-components'
 
 const PostLayout = styled.ul`
@@ -36,32 +37,34 @@ const PostLayout = styled.ul`
   }
 `;
 
-const SinglePost = ({ match }) => {
+const SinglePost = () => {
 
-  const [post, setPost] = useState([])
+  let { id } = useParams()
+
+  const [singlePost, setSinglePost] = useState([])
+
   const getPost = async () => {
-    let postReq = await fetch(`http://localhost:4000/dashboard/post/${match.params.id}`, {
+    let postReq = await fetch(`http://localhost:4000/dashboard/post/${id}`, {
       method: 'GET',
       headers: { token: localStorage.token }
     });
 
     const postRes = await postReq.json()
-    setPost(postRes)
-    console.log(postRes);
+    setSinglePost(postRes)
   }
 
   useEffect(() => {
     getPost()
-  }, [match.params.id])
+  })
 
   return (
     <PostLayout>
       <li>
         <div>
-          <img className='img-fluid' src={post.image_url} alt="" />
+          <img className='img-fluid' src={singlePost.image_url} alt="" />
         </div>
-        <p className='post-body'>{post.text}</p>
-        <div className='credits'>posted by {post.username} on {post.created_at}</div>
+        <p className='post-body'>{singlePost.text}</p>
+        <div className='credits'>posted by {singlePost.username} on {singlePost.created_at}</div>
       </li>
     </PostLayout>
   )

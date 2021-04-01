@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -39,39 +39,36 @@ const PostLayout = styled.ul`
 
 const GetPosts = (args) => {
 
-  console.log('posts', args.posts);
-
   useEffect(() => {
+
+    console.log(args);
+
+    const controller = new AbortController()
 
     fetch('http://localhost:4000/dashboard/post', {
       method: 'GET',
       headers: { token: localStorage.token }
-    })
+    }, { signal: controller.signal })
       .then(res => res.json())
-      .then(data => args.setPosts(data));
-
-  }, [])
-
-  // const fetchPosts = () => {
-  //   fetch(`http://localhost:4000/dashboard/post`, {
-  //     method: 'GET',
-  //     headers: { token: localStorage.token }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => setPosts(data));
-  // }
-
-  // useEffect(() => {
-  //   let mounted = true;
-  //   fetchPosts()
-  //   return () => mounted = false;
-  // }, [])
+      .then(data => args.setPosts(data))
+      .catch(e => {
+        if (controller.signal.aborted) {
+          console.log('Request has been gracefully cancelled');
+        }
+        else {
+          throw e;
+        }
+      });
+    return function cancel() {
+      controller.abort();
+    };
+  }, [args.posts.length])
 
   return (
     <PostLayout>
       {args.posts?.map(post => {
         return (
-          <Link to={`/dashboard/post/${post.post_id}`} key={post.post_id}>
+          <Link key={post.post_id} to={`/dashboard/post/${post.post_id}`} >
             <li>
               <div>
                 <img className='img-fluid' src={post.image_url} alt="" />
