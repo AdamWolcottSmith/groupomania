@@ -40,22 +40,30 @@ const PostLayout = styled.ul`
 const SinglePost = () => {
 
   let { id } = useParams()
-
   const [singlePost, setSinglePost] = useState([])
 
-  const getPost = async () => {
-    let postReq = await fetch(`http://localhost:4000/dashboard/post/${id}`, {
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch(`http://localhost:4000/dashboard/post/${id}`, {
       method: 'GET',
       headers: { token: localStorage.token }
-    });
+    }, { signal: controller.signal })
+      .then(res => res.json())
+      .then(data => setSinglePost(data))
+      .catch(e => {
+        if (controller.signal.aborted) {
+          console.log('Request has been gracefully cancelled');
+        }
+        else {
+          throw e;
+        }
+      });
+    return function cancel() {
+      controller.abort();
+    };
 
-    const postRes = await postReq.json()
-    setSinglePost(postRes)
-  }
-
-  useEffect(() => {
-    getPost()
-  })
+  }, [])
 
   return (
     <PostLayout>

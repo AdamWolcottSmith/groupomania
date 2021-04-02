@@ -41,8 +41,6 @@ const GetPosts = (args) => {
 
   useEffect(() => {
 
-    console.log(args);
-
     const controller = new AbortController()
 
     fetch('http://localhost:4000/dashboard/post', {
@@ -75,6 +73,7 @@ const GetPosts = (args) => {
               </div>
               <p className='post-body'>{post.text}</p>
               <div className='credits'>
+                posted by {post.username}
               </div>
             </li>
           </Link>

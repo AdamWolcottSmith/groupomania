@@ -17,16 +17,22 @@ import {
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import Register from './components/Register';
+import CreatePosts from './components/posts/CreatePosts';
+import GetPosts from './components/posts/GetPosts';
+import SinglePost from './components/posts/SinglePost';
 
 toast.configure()
 
 function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [posts, setPosts] = useState([])
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean)
   }
+
+  console.log("auth", isAuthenticated);
 
   async function isAuth() {
     try {
@@ -52,7 +58,9 @@ function App() {
   return (
     <Fragment>
       <Router>
-        <Navbar />
+
+        <Navbar auth={isAuthenticated} setAuth={setAuth} />
+
         <div className="container">
           <Switch>
             <Route exact path='/login'
@@ -76,12 +84,25 @@ function App() {
             <Route exact path='/dashboard'
               render={props =>
                 isAuthenticated ? (
-                  <Dashboard {...props} setAuth={setAuth} />
+                  <>
+                    <Dashboard {...props} setAuth={setAuth} />
+                    <CreatePosts posts={posts} setPosts={setPosts} />
+                    <GetPosts posts={posts} setPosts={setPosts} />
+                  </>
                 ) : (
                   <Redirect to='/login' />
                 )
-              }
-            />
+              }>
+            </Route>
+            <Route exact path='/dashboard/post/:id'
+              render={props =>
+                isAuthenticated ? (
+                  <SinglePost {...props} />
+                ) : (
+                  <Redirect to='/login' />
+                )
+              }>
+            </Route>
           </Switch>
         </div>
       </Router>

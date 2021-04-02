@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 const Ul = styled.ul`
   list-style: none;
@@ -34,21 +35,42 @@ const Ul = styled.ul`
 `;
 
 
-const RightNav = ({ open }) => {
+const RightNav = ({ open, auth, setAuth, setOpen }) => {
 
+  const logout = (e) => {
+    e.preventDefault()
+    localStorage.removeItem('token')
+    setAuth(false)
+    toast.success('Logged out successfully')
+  }
 
   return (
     <Ul open={open}>
-      <Link to='/login' >
-        <li>Login</li>
-      </Link>
-      <Link to='/register'>
-        <li>Signup</li>
-      </Link>
-      <Link to='/dashboard'>
+      <Link to='/dashboard' onClick={() => setOpen(!open)}>
         <li>Home</li>
       </Link>
-    </Ul>
+      {auth ? (
+        <Link to='/login' onClick={(e) => { logout(e); setOpen(!open) }} >
+          <li>Log Out</li>
+        </Link>
+      ) : (
+        <Link to='/login' onClick={() => setOpen(!open)}>
+          <li>Login</li>
+        </Link>
+      )
+      }
+      {
+        auth ? (
+          <Link to='/login' onClick={(e) => { logout(e); setOpen(!open) }}>
+            <li>Delete Account</li>
+          </Link>
+        ) : (
+          <Link to='/register' onClick={() => setOpen(!open)}>
+            <li>Signup</li>
+          </Link>
+        )
+      }
+    </Ul >
   )
 }
 
