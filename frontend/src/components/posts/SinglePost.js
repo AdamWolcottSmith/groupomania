@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components'
 
 const PostLayout = styled.ul`
@@ -37,9 +37,10 @@ const PostLayout = styled.ul`
   }
 `;
 
-const SinglePost = () => {
+const SinglePost = ({ user }) => {
 
   let { id } = useParams()
+  const history = useHistory()
   const [singlePost, setSinglePost] = useState([])
 
   useEffect(() => {
@@ -62,8 +63,17 @@ const SinglePost = () => {
     return function cancel() {
       controller.abort();
     };
-
   }, [])
+
+  function deletePost() {
+    fetch(`http://localhost:4000/dashboard/post/${id}`, {
+      method: 'DELETE',
+      headers: { token: localStorage.token }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .then(() => history.push('/dashboard'))
+  }
 
   return (
     <PostLayout>
@@ -73,6 +83,14 @@ const SinglePost = () => {
         </div>
         <p className='post-body'>{singlePost.text}</p>
         <div className='credits'>posted by {singlePost.username} on {singlePost.created_at}</div>
+        {user.user_id === singlePost.user_id ?
+          (<button className="btn btn-danger col-sm-2" onClick={() => deletePost()} >
+            Delete Post
+          </button>
+          ) : (
+            <></>
+          )
+        }
       </li>
     </PostLayout>
   )

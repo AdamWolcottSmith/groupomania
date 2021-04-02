@@ -98,10 +98,13 @@ exports.deletePost = async (req, res) => {
     const values = [postId, userId]
     const res = await client.query(queryText, values)
     const deletePostText = 'DELETE FROM posts WHERE post_id = $1 AND user_id = $2'
-    const filename = res.rows[0].image_url.split('/images/')[1];
-    await fs.unlink('images/' + filename, () => {
-      client.query(deletePostText, values)
-    })
+    if (res.file) {
+      const filename = res.rows[0].image_url.split('/images/')[1];
+      await fs.unlink('images/' + filename, () => {
+        client.query(deletePostText, values)
+      })
+    }
+    await client.query(deletePostText, values)
     await client.query('COMMIT')
   } catch (e) {
     await client.query('ROLLBACK')

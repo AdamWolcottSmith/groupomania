@@ -66,8 +66,8 @@ const GetPosts = (args) => {
     <PostLayout>
       {args.posts?.map(post => {
         return (
-          <Link key={post.post_id} to={`/dashboard/post/${post.post_id}`} >
-            <li>
+          <Link to={`/dashboard/post/${post.post_id}`} >
+            <li key={post.post_id}>
               <div>
                 <img className='img-fluid' src={post.image_url} alt="" />
               </div>

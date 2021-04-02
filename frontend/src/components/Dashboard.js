@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Greeting = styled.div`
@@ -7,9 +7,7 @@ const Greeting = styled.div`
   padding: 2rem;
 `;
 
-const Dashboard = ({ setAuth }) => {
-
-  const [name, setName] = useState('')
+const Dashboard = ({ user, setUser }) => {
 
   async function getName() {
     try {
@@ -20,8 +18,7 @@ const Dashboard = ({ setAuth }) => {
       })
 
       const parseRes = await response.json()
-
-      setName(parseRes.username)
+      setUser(parseRes)
 
     } catch (error) {
       console.error(error.message)
@@ -35,7 +32,7 @@ const Dashboard = ({ setAuth }) => {
   return (
     <Fragment>
       <Greeting>
-        <h1>Hello {name}!</h1>
+        <h1>Hello {user.username}!</h1>
       </Greeting>
     </Fragment>
   )

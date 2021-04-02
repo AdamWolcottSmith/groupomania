@@ -27,12 +27,11 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [posts, setPosts] = useState([])
+  const [user, setUser] = useState('')
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean)
   }
-
-  console.log("auth", isAuthenticated);
 
   async function isAuth() {
     try {
@@ -85,7 +84,7 @@ function App() {
               render={props =>
                 isAuthenticated ? (
                   <>
-                    <Dashboard {...props} setAuth={setAuth} />
+                    <Dashboard {...props} setAuth={setAuth} user={user} setUser={setUser} />
                     <CreatePosts posts={posts} setPosts={setPosts} />
                     <GetPosts posts={posts} setPosts={setPosts} />
                   </>
@@ -97,7 +96,7 @@ function App() {
             <Route exact path='/dashboard/post/:id'
               render={props =>
                 isAuthenticated ? (
-                  <SinglePost {...props} />
+                  <SinglePost {...props} user={user} />
                 ) : (
                   <Redirect to='/login' />
                 )
