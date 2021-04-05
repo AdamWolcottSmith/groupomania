@@ -1,6 +1,8 @@
 const pool = require('../db')
 const bcrypt = require('bcrypt')
 const jwtGenerator = require('../utils/jwtGenerator')
+const fs = require('fs')
+
 
 exports.register = async (req, res) => {
   try {
@@ -70,6 +72,41 @@ exports.login = async (req, res) => {
     console.error(error.message)
     res.status(500).send('Server Error')
   }
+}
+
+exports.deleteUser = async (req, res) => {
+  const userId = req.params.id
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+
+    const queryTextPosts = 'SELECT * FROM posts WHERE user_id = $1'
+    const res = await client.query(queryTextPosts, [userId])
+    const deletePostsText = 'DELETE FROM posts WHERE user_id = $1'
+
+    //unlinking files before deleting user
+
+    res.rows.forEach(async (items) => {
+      if (items.image_url) {
+        const filename = items.image_url.split('/images/')[1];
+        await fs.unlink('images/' + filename, () => {
+          client.query(deletePostsText, [userId])
+        })
+      } else {
+        await client.query(deletePostsText, [userId])
+      }
+    })
+
+    const deleteUserText = 'DELETE FROM users WHERE user_id = $1'
+    await client.query(deleteUserText, [userId])
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+  res.status(200).json(`User deleted with ID: ${userId}`)
 }
 
 

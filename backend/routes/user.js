@@ -6,6 +6,7 @@ const userCtrl = require('../controllers/users')
 
 router.post('/register', validInfo, userCtrl.register)
 router.post('/login', validInfo, userCtrl.login)
+router.delete('/user/:id', validInfo, userCtrl.deleteUser)
 router.get('/', validInfo, userCtrl.getAllUsers)
 
 //verify

@@ -34,14 +34,28 @@ const Ul = styled.ul`
   }
 `;
 
-
-const RightNav = ({ open, auth, setAuth, setOpen }) => {
+const RightNav = ({ open, auth, setAuth, setOpen, user }) => {
 
   const logout = (e) => {
     e.preventDefault()
     localStorage.removeItem('token')
     setAuth(false)
     toast.success('Logged out successfully')
+  }
+
+  const deleteUser = (e) => {
+    e.preventDefault()
+    fetch(`http://localhost:4000/auth/user/${user.user_id}`, {
+      method: 'DELETE',
+      headers: { token: localStorage.token }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .then(() => {
+        localStorage.removeItem('token')
+        setAuth(false)
+        toast.success('You successfully deleted your account')
+      })
   }
 
   return (
@@ -61,7 +75,7 @@ const RightNav = ({ open, auth, setAuth, setOpen }) => {
       }
       {
         auth ? (
-          <Link to='/login' onClick={(e) => { logout(e); setOpen(!open) }}>
+          <Link to='/login' onClick={(e) => { deleteUser(e); setOpen(!open) }}>
             <li>Delete Account</li>
           </Link>
         ) : (
@@ -70,7 +84,7 @@ const RightNav = ({ open, auth, setAuth, setOpen }) => {
           </Link>
         )
       }
-    </Ul >
+    </Ul>
   )
 }
 

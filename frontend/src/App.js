@@ -41,7 +41,6 @@ function App() {
       })
 
       const parseRes = await response.json()
-
       parseRes === true ? setIsAuthenticated(true) :
         setIsAuthenticated(false)
 
@@ -58,7 +57,7 @@ function App() {
     <Fragment>
       <Router>
 
-        <Navbar auth={isAuthenticated} setAuth={setAuth} />
+        <Navbar auth={isAuthenticated} setAuth={setAuth} user={user} />
 
         <div className="container">
           <Switch>

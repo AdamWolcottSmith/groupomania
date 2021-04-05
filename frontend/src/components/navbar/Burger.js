@@ -39,7 +39,7 @@ const StyledBurger = styled.div`
   }
 `;
 
-const Burger = ({ auth, setAuth }) => {
+const Burger = ({ auth, setAuth, user }) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -49,7 +49,7 @@ const Burger = ({ auth, setAuth }) => {
         <div />
         <div />
       </StyledBurger>
-      <RightNav open={open} setOpen={setOpen} auth={auth} setAuth={setAuth} />
+      <RightNav open={open} setOpen={setOpen} auth={auth} setAuth={setAuth} user={user} />
     </>
   )
 }

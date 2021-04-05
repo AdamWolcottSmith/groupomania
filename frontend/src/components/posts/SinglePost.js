@@ -87,9 +87,7 @@ const SinglePost = ({ user }) => {
           (<button className="btn btn-danger col-sm-2" onClick={() => deletePost()} >
             Delete Post
           </button>
-          ) : (
-            <></>
-          )
+          ) : null
         }
       </li>
     </PostLayout>

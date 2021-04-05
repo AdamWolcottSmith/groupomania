@@ -15,13 +15,13 @@ const Nav = styled.nav`
   }
 `;
 
-const Navbar = ({ auth, setAuth }) => {
+const Navbar = ({ auth, setAuth, user }) => {
   return (
     <Nav>
       <div className="logo">
         <h5>Group-O-Mania</h5>
       </div>
-      <Burger auth={auth} setAuth={setAuth} />
+      <Burger auth={auth} setAuth={setAuth} user={user} />
     </Nav>
   )
 }
