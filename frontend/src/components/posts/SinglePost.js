@@ -7,21 +7,22 @@ const PostLayout = styled.ul`
   display: flex;
   flex-flow: column;
   padding-left: 0;
-  
-  a {
-
-    text-decoration: none;
-    margin: .5rem;
-    padding: .5rem;
-    text-align: center;
-    align-self: center;
-    height: 75%;
-    width: 75%;
-    box-shadow: 10px 10px 8px #888888;
+  position: relative;
+  top: 67px;
 
     li {
-    
+      text-decoration: none;
+      margin: .5rem;
+      padding: .5rem;
+      text-align: center;
+      align-self: center;
+      height: 75%;
+      width: 75%;
+      box-shadow: 10px 10px 8px #888888;
+      
       .post-body {
+        text-align: center;
+        font-size: 1.2rem;
         color: black;
         padding: 1rem;
         margin-bottom: 0;
@@ -32,9 +33,9 @@ const PostLayout = styled.ul`
         font-size: small;
         text-transform: lowercase;
         font-style: oblique;
+        margin-bottom: 14px;
       }
     } 
-  }
 `;
 
 const SinglePost = ({ user }) => {
@@ -82,7 +83,7 @@ const SinglePost = ({ user }) => {
           <img className='img-fluid' src={singlePost.image_url} alt="" />
         </div>
         <p className='post-body'>{singlePost.text}</p>
-        <div className='credits'>posted by {singlePost.username} on {singlePost.created_at}</div>
+        <div className='credits'>posted by {singlePost.username} on {singlePost.created_at?.split('T')[0]}</div>
         {user.user_id === singlePost.user_id ?
           (<button className="btn btn-danger col-sm-2" onClick={() => deletePost()} >
             Delete Post

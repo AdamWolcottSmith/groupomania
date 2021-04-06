@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 
 const PostForm = styled.form`
-  margin: 2em;
+  margin: 1.2em;
   display: flex;
   justify-content: space-around;
   flex-flow: column wrap;
+  
 
   label {
     cursor: pointer;

@@ -1,8 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import Burger from './Burger'
 
 const Nav = styled.nav`
+  background-color: beige;
+  z-index: 1;
+  position: fixed;
   width: 100%;
   height: 55px;
   border-bottom: 2px solid #f1f1f1;
@@ -12,15 +16,28 @@ const Nav = styled.nav`
 
   .logo {
     padding: 15px 0;
+
+    .img-container {
+      width: 234px;
+      margin-top: -104px;
+    }
+
+    h1 {
+      font-size: 24px;
+      display: none;
+    }
   }
 `;
 
 const Navbar = ({ auth, setAuth, user }) => {
   return (
     <Nav>
-      <div className="logo">
-        <h5>Group-O-Mania</h5>
-      </div>
+      <Link to='/dashboard' className="logo">
+        <div className="img-container">
+          <img className="img-fluid" src={process.env.PUBLIC_URL + "icon-left-font-monochrome-black.png"} alt="Groupomania logo" />
+          <h1 className="logo-overrides">Group-O-Mania</h1>
+        </div>
+      </Link>
       <Burger auth={auth} setAuth={setAuth} user={user} />
     </Nav>
   )

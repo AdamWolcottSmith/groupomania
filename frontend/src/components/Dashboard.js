@@ -2,6 +2,8 @@ import React, { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Greeting = styled.div`
+  position: relative;
+  top: 50px;
   display: flex;
   justify-content: space-around;
   padding: 2rem;
@@ -32,7 +34,7 @@ const Dashboard = ({ user, setUser }) => {
   return (
     <Fragment>
       <Greeting>
-        <h1>Hello {user.username}!</h1>
+        <h2>Hello {user.username}!</h2>
       </Greeting>
     </Fragment>
   )
