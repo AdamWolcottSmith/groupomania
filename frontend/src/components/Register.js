@@ -1,6 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import styled from 'styled-components'
+
+const StyledRegister = styled.div`
+  h1 {
+    margin-top: 10%;
+  }
+`
 
 const Register = ({ setAuth }) => {
 
@@ -48,16 +55,16 @@ const Register = ({ setAuth }) => {
   }
 
   return (
-    <Fragment>
-      <h1 className="text-center my-5">Register</h1>
+    <StyledRegister>
+      <h1 className="text-center">Register</h1>
       <form onSubmit={onSubmitForm}>
         <input type="email" name="email" placeholder="Email" className="form-control my-3" value={email} onChange={e => onChange(e)} />
         <input type="password" name="password" placeholder="Password" className="form-control my-3" value={password} onChange={e => onChange(e)} />
         <input type="text" name="username" placeholder="John" className="form-control my-3" value={username} onChange={e => onChange(e)} />
         <button className="btn btn-success btn-block">Sign Up</button>
       </form>
-      <Link to='/login'>Login</Link>
-    </Fragment>
+      <Link to='/login'>Back to login</Link>
+    </StyledRegister>
   )
 }
 
