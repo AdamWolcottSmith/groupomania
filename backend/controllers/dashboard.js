@@ -90,7 +90,7 @@ exports.modifyPost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   const userId = req.users
-  const postId = parseInt(req.params.id)
+  const postId = parseInt(req.params.postid)
   const client = await pool.connect()
   try {
     await client.query('BEGIN')
@@ -131,4 +131,46 @@ exports.getAllPosts = async (req, res) => {
     console.error(error.message)
     res.status(500).json(error.message)
   }
+}
+
+// user read post
+
+exports.readPost = async (req, res) => {
+  const userId = req.users
+  const postId = parseInt(req.params.postid)
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    const queryText = 'INSERT INTO user_read (post_id, user_id) VALUES ($1, $2) RETURNING *'
+    const values = [postId, userId]
+    await client.query(queryText, values)
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+  res.status(200).json(`Post read with ID: ${postId}`)
+}
+
+// check to read post
+
+exports.didReadPost = async (req, res) => {
+  const userId = req.users
+  const postId = parseInt(req.params.id)
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    const queryText = 'SELECT * FROM user_read WHERE post_id = $1 AND user_id = $2'
+    const values = [postId, userId]
+    await client.query(queryText, values)
+    await client.query('COMMIT')
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+  res.status(200).json(`Post read with ID: ${postId}`)
 }

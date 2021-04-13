@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -7,20 +8,18 @@ const PostLayout = styled.ul`
   display: flex;
   flex-flow: column;
   padding-left: 0;
-  
-  a {
-
-    text-decoration: none;
-    margin: .5rem;
-    padding: .5rem;
-    text-align: center;
-    align-self: center;
-    height: 75%;
-    width: 75%;
-    box-shadow: 10px 10px 8px #888888;
-
-    li {
+  opacity: ${({ read }) => read ? '100%' : '60%'};
     
+    li {
+      text-decoration: none;
+      margin: .5rem;
+      padding: .5rem;
+      text-align: center;
+      align-self: center;
+      height: 75%;
+      width: 75%;
+      box-shadow: 10px 10px 8px #888888;
+      
       .post-body {
         color: black;
         padding: 1rem;
@@ -34,10 +33,15 @@ const PostLayout = styled.ul`
         font-style: oblique;
       }
     } 
-  }
 `;
 
 const GetPosts = (args) => {
+
+  const history = useHistory()
+  const [read, setRead] = useState({})
+
+  let { id } = useParams()
+
 
   useEffect(() => {
 
@@ -62,21 +66,47 @@ const GetPosts = (args) => {
     };
   }, [args.posts.length])
 
+  function deletePost(postId) {
+    fetch(`http://localhost:4000/dashboard/post/${postId}`, {
+      method: 'DELETE',
+      headers: { token: localStorage.token }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .then(() => history.push('/dashboard'))
+  }
+
+  function readPost(postId) {
+    fetch(`http://localhost:4000/dashboard/read/${postId}`, {
+      method: 'POST',
+      headers: { token: localStorage.token }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+  }
+
   return (
-    <PostLayout>
+    <PostLayout read={read} setRead={setRead}>
       {args.posts?.map(post => {
         return (
-          <Link to={`/dashboard/post/${post.post_id}`} >
-            <li key={post.post_id}>
-              <div>
-                <img className='img-fluid' src={post.image_url} alt="" />
-              </div>
-              <p className='post-body'>{post.text}</p>
-              <div className='credits'>
-                posted by {post.username}
-              </div>
-            </li>
-          </Link>
+          <li key={post.post_id} >
+            <div>
+              <img className='img-fluid' src={post.image_url} alt="" />
+            </div>
+            <p className='post-body'>{post.text}</p>
+            <button className="btn btn-warning col-sm-2" onClick={() => { readPost(post.post_id); setRead(!read) }} >
+              Read Post
+              </button>
+            {args.user.user_id === post.user_id ?
+              (<button className="btn btn-danger col-sm-2" onClick={() => deletePost(post.post_id)} >
+                Delete Post
+              </button>
+              ) : null
+            }
+            <div className='credits'>
+              posted by {post.username}
+            </div>
+          </li>
         )
       })}
     </PostLayout>

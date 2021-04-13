@@ -85,7 +85,7 @@ function App() {
                   <>
                     <Dashboard {...props} setAuth={setAuth} user={user} setUser={setUser} />
                     <CreatePosts posts={posts} setPosts={setPosts} />
-                    <GetPosts posts={posts} setPosts={setPosts} />
+                    <GetPosts posts={posts} setPosts={setPosts} user={user} setUser={setUser} />
                   </>
                 ) : (
                   <Redirect to='/login' />

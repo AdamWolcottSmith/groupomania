@@ -9,6 +9,7 @@ const PostLayout = styled.ul`
   padding-left: 0;
   position: relative;
   top: 67px;
+  opacity: ${({ read }) => read ? '60%' : '100%'};
 
     li {
       text-decoration: none;
@@ -39,6 +40,8 @@ const PostLayout = styled.ul`
 `;
 
 const SinglePost = ({ user }) => {
+
+  const [read, setRead] = useState([])
 
   let { id } = useParams()
   const history = useHistory()
@@ -76,14 +79,27 @@ const SinglePost = ({ user }) => {
       .then(() => history.push('/dashboard'))
   }
 
+  function readPost() {
+    fetch(`http://localhost:4000/dashboard/read/${id}`, {
+      method: 'POST',
+      headers: { token: localStorage.token }
+    })
+      .then(res => res.json())
+      .then(data => setRead(data))
+      .then(() => console.log(read))
+  }
+
   return (
-    <PostLayout>
+    <PostLayout read={read} setRead={setRead}>
       <li>
         <div>
           <img className='img-fluid' src={singlePost.image_url} alt="" />
         </div>
         <p className='post-body'>{singlePost.text}</p>
         <div className='credits'>posted by {singlePost.username} on {singlePost.created_at?.split('T')[0]}</div>
+        <button className="btn btn-warning col-sm-2" onClick={() => readPost(read)} >
+          Read Post
+              </button>
         {user.user_id === singlePost.user_id ?
           (<button className="btn btn-danger col-sm-2" onClick={() => deletePost()} >
             Delete Post
