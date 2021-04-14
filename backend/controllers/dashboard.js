@@ -122,7 +122,7 @@ exports.getAllPosts = async (req, res) => {
   try {
     const client = await pool.connect()
     try {
-      const results = await client.query('SELECT p.user_id, post_id, image_url, created_at, text, username FROM posts p INNER  JOIN users u ON u.user_id = p.user_id ORDER BY created_at DESC')
+      const results = await client.query('SELECT p.user_id, post_id, image_url, created_at, text, username FROM posts p INNER JOIN users u ON u.user_id = p.user_id ORDER BY created_at DESC')
       res.status(200).json(results.rows)
     } finally {
       client.release()
@@ -141,7 +141,7 @@ exports.readPost = async (req, res) => {
   const client = await pool.connect()
   try {
     await client.query('BEGIN')
-    const queryText = 'INSERT INTO user_read (post_id, user_id) VALUES ($1, $2) RETURNING *'
+    const queryText = 'INSERT INTO users_read (post_read, user_read) VALUES ($1, $2) RETURNING *'
     const values = [postId, userId]
     await client.query(queryText, values)
     await client.query('COMMIT')
@@ -158,19 +158,18 @@ exports.readPost = async (req, res) => {
 
 exports.didReadPost = async (req, res) => {
   const userId = req.users
-  const postId = parseInt(req.params.id)
   const client = await pool.connect()
   try {
     await client.query('BEGIN')
-    const queryText = 'SELECT * FROM user_read WHERE post_id = $1 AND user_id = $2'
-    const values = [postId, userId]
-    await client.query(queryText, values)
+    const queryText = 'SELECT * FROM users_read WHERE user_read = $1'
+    const values = [userId]
+    const results = await client.query(queryText, values)
     await client.query('COMMIT')
+    res.status(200).json(results.rows)
   } catch (e) {
     await client.query('ROLLBACK')
     throw e
   } finally {
     client.release()
   }
-  res.status(200).json(`Post read with ID: ${postId}`)
 }

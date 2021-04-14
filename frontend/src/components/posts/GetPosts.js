@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import React, { useEffect } from 'react';
+import Post from './Post'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+
 
 const PostLayout = styled.ul`
   list-style: none;
   display: flex;
   flex-flow: column;
   padding-left: 0;
-  opacity: ${({ read }) => read ? '100%' : '60%'};
-    
-    li {
+  
+  li {
       text-decoration: none;
       margin: .5rem;
       padding: .5rem;
@@ -35,18 +34,79 @@ const PostLayout = styled.ul`
     } 
 `;
 
+
+
+// const Post = ({ post, userId }) => {
+//   const [showReadIndicator, setShowReadIndicator] = useState(false);
+
+//   useEffect(() => {
+//     fetch(`http://localhost:4000/dashboard/read/${post.postId}`, {
+//       method: 'GET',
+//       headers: { token: localStorage.token }
+//     })
+//       .then(res => res.json())
+//       .then(data => {
+//         data.forEach(item => {
+//           console.log('post', post.post_id);
+//           if (userId === item.user_read && post.post_id === item.post_read) {
+//             setShowReadIndicator(true)
+//           }
+//         });
+//       })
+//   }, [])
+
+//   function readPost(postId) {
+//     fetch(`http://localhost:4000/dashboard/read/${postId}`, {
+//       method: 'POST',
+//       headers: { token: localStorage.token }
+//     })
+//       .then(res => res.json())
+//       .then(data => console.log(data))
+//       .then(() => setShowReadIndicator(true))
+//   }
+
+//   //delete post
+
+//   function deletePost(postId) {
+//     fetch(`http://localhost:4000/dashboard/post/${postId}`, {
+//       method: 'DELETE',
+//       headers: { token: localStorage.token }
+//     })
+//       .then(res => res.json())
+//       .then(data => console.log(data))
+//   }
+
+//   return (
+//     <li key={post.post_id} >
+//       <div>
+//         <img className='img-fluid' src={post.image_url} alt="" />
+//       </div>
+//       <p className='post-body'>{post.text}</p>
+
+//       {showReadIndicator ? <>You read this!</> : <button className="btn btn-warning col-sm-2" onClick={() => { readPost(post.post_id); }} >
+//         Read Post
+//         </button>}
+
+//       {userId === post.user_id ?
+//         (<button className="btn btn-danger col-sm-2" onClick={() => deletePost(post.post_id)} >
+//           Delete Post
+//         </button>
+//         ) : null
+//       }
+//       <div className='credits'>
+//         posted by {post.username}
+//       </div>
+//     </li>
+//   )
+// }
+
+
 const GetPosts = (args) => {
 
-  const history = useHistory()
-  const [read, setRead] = useState({})
-
-  let { id } = useParams()
-
+  //get posts
 
   useEffect(() => {
-
     const controller = new AbortController()
-
     fetch('http://localhost:4000/dashboard/post', {
       method: 'GET',
       headers: { token: localStorage.token }
@@ -66,49 +126,17 @@ const GetPosts = (args) => {
     };
   }, [args.posts.length])
 
-  function deletePost(postId) {
-    fetch(`http://localhost:4000/dashboard/post/${postId}`, {
-      method: 'DELETE',
-      headers: { token: localStorage.token }
-    })
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .then(() => history.push('/dashboard'))
-  }
-
-  function readPost(postId) {
-    fetch(`http://localhost:4000/dashboard/read/${postId}`, {
-      method: 'POST',
-      headers: { token: localStorage.token }
-    })
-      .then(res => res.json())
-      .then(data => console.log(data))
-  }
+  //delete post
 
   return (
-    <PostLayout read={read} setRead={setRead}>
-      {args.posts?.map(post => {
-        return (
-          <li key={post.post_id} >
-            <div>
-              <img className='img-fluid' src={post.image_url} alt="" />
-            </div>
-            <p className='post-body'>{post.text}</p>
-            <button className="btn btn-warning col-sm-2" onClick={() => { readPost(post.post_id); setRead(!read) }} >
-              Read Post
-              </button>
-            {args.user.user_id === post.user_id ?
-              (<button className="btn btn-danger col-sm-2" onClick={() => deletePost(post.post_id)} >
-                Delete Post
-              </button>
-              ) : null
-            }
-            <div className='credits'>
-              posted by {post.username}
-            </div>
-          </li>
-        )
-      })}
+    <PostLayout>
+      {args.posts?.map(post => (
+        <Post
+          post={post}
+          userId={args.user.user_id}
+          key={post.post_id}
+        />
+      ))}
     </PostLayout>
   )
 }
