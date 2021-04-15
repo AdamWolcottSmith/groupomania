@@ -60,7 +60,8 @@ const Post = ({ post, userId }) => {
           }
         });
       })
-  }, [])
+  }, [userId])
+
 
   function readPost(postId) {
     fetch(`http://localhost:4000/dashboard/read/${postId}`, {

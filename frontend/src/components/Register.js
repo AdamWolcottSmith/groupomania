@@ -43,7 +43,7 @@ const Register = ({ setAuth }) => {
         localStorage.setItem('token', parseRes.token)
 
         setAuth(true)
-        toast.success('Registered successfully')
+        toast.success('Registered successfully', { style: { backgroundColor: 'aquamarine', color: 'black' } })
       } else {
         setAuth(false)
         toast.error(parseRes)

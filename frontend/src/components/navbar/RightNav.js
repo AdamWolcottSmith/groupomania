@@ -40,7 +40,7 @@ const RightNav = ({ open, auth, setAuth, setOpen, user }) => {
     e.preventDefault()
     localStorage.removeItem('token')
     setAuth(false)
-    toast.success('Logged out successfully')
+    toast.success('Logged out successfully', { style: { backgroundColor: 'aquamarine', color: 'black' } })
   }
 
   const deleteUser = (e) => {
@@ -54,7 +54,7 @@ const RightNav = ({ open, auth, setAuth, setOpen, user }) => {
       .then(() => {
         localStorage.removeItem('token')
         setAuth(false)
-        toast.success('You successfully deleted your account')
+        toast.success('You successfully deleted your account', { style: { backgroundColor: 'aquamarine', color: 'black' } })
       })
   }
 
