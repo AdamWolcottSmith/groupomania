@@ -29,6 +29,7 @@ const Dashboard = ({ user, setUser }) => {
 
   useEffect(() => {
     getName()
+    // eslint-disable-next-line
   }, [])
 
   return (

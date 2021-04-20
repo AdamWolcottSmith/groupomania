@@ -60,6 +60,7 @@ const Post = ({ post, userId }) => {
           }
         });
       })
+    // eslint-disable-next-line
   }, [userId])
 
 

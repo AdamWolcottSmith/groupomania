@@ -124,6 +124,7 @@ const GetPosts = (args) => {
     return function cancel() {
       controller.abort();
     };
+    // eslint-disable-next-line
   }, [args.posts.length])
 
   //delete post
