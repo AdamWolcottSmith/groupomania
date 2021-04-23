@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import Burger from './Burger'
+import pic from '../../images/icon-left-font-monochrome-black.png'
 
 const Nav = styled.nav`
   background-color: beige;
@@ -35,7 +36,7 @@ const Navbar = ({ auth, setAuth, user }) => {
     <Nav>
       <Link to='/dashboard' className="logo">
         <div className="img-container">
-          <img className="img-fluid" src={process.env.PUBLIC_URL + "icon-left-font-monochrome-black.png"} alt="Groupomania logo" />
+          <img className="img-fluid" src={pic} alt="Groupomania logo" />
           <h1 className="logo-overrides">Group-O-Mania</h1>
         </div>
       </Link>

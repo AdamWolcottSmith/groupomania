@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const StyledRegister = styled.div`
   h1 {
-    margin-top: 10%;
+    margin-top: 22%;
   }
 `
 

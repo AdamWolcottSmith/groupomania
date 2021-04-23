@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const StyledLogin = styled.div`
   h1 {
-    margin-top: 10%;
+    margin-top: 22%;
   }
 `
 
